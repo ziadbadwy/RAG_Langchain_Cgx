@@ -1,0 +1,8 @@
+langchain
+pypdf
+gpt4all
+yt_dlp
+unstructured
+docx2txt
+sentence_transformers
+faiss-cpu
