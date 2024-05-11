@@ -14,20 +14,20 @@ Welcome to LLAMA 3 RAG Langchain! This chatbot, powered by Meta's LLAMA 3 model,
 
 To get started with LLAMA 3 RAG Langchain, follow these easy steps to set up the project on your local machine:
 
-1. *Clone the Repository* 📥
+1. **Clone the Repository** 📥
    - Clone this repo to your local environment using Git:
      bash
      git clone https://github.com/yourusername/LLAMA-3-RAG-Langchain.git
      cd LLAMA-3-RAG-Langchain
      
 
-2. *Install Dependencies* 🛠
+2. **Install Dependencies** 🛠
    - Ensure you have Python installed and then set up the necessary libraries:
      bash
      pip install -r requirements.txt
      
 
-3. *Set Up Helper.py* 📄
+3. **Set Up Helper.py** 📄
    - Helper.py is a crucial class that contains all the functions you'll need. Here's what it does:
      - *Load the PDF*: Open and read your PDF document.
      - *Chunk Processing*: Split the document into chunks.
@@ -38,7 +38,7 @@ To get started with LLAMA 3 RAG Langchain, follow these easy steps to set up the
      - *Response Generation*: Generate responses using the LLAMA 3 model.
      - *Evaluation*: Build an evaluation pipeline to measure the model's performance.
 
-4. *Running the Application* 🚀
+4. **Running the Application** 🚀
    - Start the application to begin interacting with the LLAMA 3 model:
      bash
      python app.py
@@ -46,9 +46,9 @@ To get started with LLAMA 3 RAG Langchain, follow these easy steps to set up the
 ## User Interface with Gradio
 
 To enhance user accessibility:
-- *Built with Gradio.io*: This integration allows you to interact directly with the chatbot via a straightforward web interface.
-- *No Code Interaction*: Launch the interface and start engaging with the bot immediately—no need to interact with the code or make modifications.
-- *User-Friendly*: Designed for ease of use, enabling you to focus on getting answers without any technical Background.
+- **Built with Gradio.io**: This integration allows you to interact directly with the chatbot via a straightforward web interface.
+- **No Code Interaction**: Launch the interface and start engaging with the bot immediately—no need to interact with the code or make modifications.
+- **User-Friendly**: Designed for ease of use, enabling you to focus on getting answers without any technical Background.
 
 ### Note 📝
    - Ensure that your system has at least *8 GB of free RAM* available to run this application smoothly. This requirement is crucial for handling the intensive computational processes involved.
