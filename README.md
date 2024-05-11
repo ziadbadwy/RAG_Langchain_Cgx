@@ -4,7 +4,7 @@
 Welcome to LLAMA 3 RAG Langchain! This chatbot, powered by Meta's LLAMA 3 model, answers questions from PDF documents and remembers past interactions for seamless dialogue. It's designed to be safe and user-friendly, making it easy to get reliable answers quickly.
 ## Try It on Google Colab
 
-🔗<a target="_blank" href="https://colab.research.google.com/github/GoogleCloudPlatform/vertex-ai-samples/blob/main/notebooks/official/model_monitoring/model_monitoring.ipynb">
+🔗<a target="_blank" href="[https://colab.research.google.com/github/GoogleCloudPlatform/vertex-ai-samples/blob/main/notebooks/official/model_monitoring/model_monitoring.ipynb](https://colab.research.google.com/drive/1RZ13Gqk6T0kAZ-s8cjux572EACDb6r6a?usp=sharing)">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a> You can also interact with LLAMA 3 RAG Langchain directly on Google Colab. Just click the link, and start using the chatbot in a Colab notebook with ease!
 
