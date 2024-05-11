@@ -17,7 +17,7 @@ To get started with LLAMA 3 RAG Langchain, follow these easy steps to set up the
 1. **Clone the Repository** 📥
    - Clone this repo to your local environment using Git:
      bash
-     git clone [https://github.com/yourusername/LLAMA-3-RAG-Langchain.git](https://github.com/ziadbadwy/RAG_Langchain_Cgx)
+     git clone [https://github.com/ziadbadwy/RAG_Langchain_Cgx](https://github.com/ziadbadwy/RAG_Langchain_Cgx)
    - cd LLAMA-3-RAG-Langchain
      
 
