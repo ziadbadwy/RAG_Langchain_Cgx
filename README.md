@@ -1,56 +1,165 @@
-# LLAMA 3 RAG Langchain
+# RAG with Qwen3 + LangChain
 
-## Introduction
-Welcome to LLAMA 3 RAG Langchain! This chatbot, powered by Meta's LLAMA 3 model, answers questions from PDF documents and remembers past interactions for seamless dialogue. It's designed to be safe and user-friendly, making it easy to get reliable answers quickly.
+A Retrieval-Augmented Generation (RAG) chatbot that answers questions from any PDF document using **Qwen3:8b** via Ollama and a **multilingual FAISS** vector store. Built as a teaching session for DEPI students.
+
 ## Try It on Google Colab
 
-🔗<a target="_blank" href="https://colab.research.google.com/drive/1RZ13Gqk6T0kAZ-s8cjux572EACDb6r6a?usp=sharing">
+<a target="_blank" href="https://colab.research.google.com/github/ziadbadwy/RAG_Langchain_Cgx/blob/main/RAG.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-</a> You can also interact with LLAMA 3 RAG Langchain directly on Google Colab. Just click the link, and start using the chatbot in a Colab notebook with ease!
+</a>
+
+---
+
+## How It Works
+
+```
+PDF Document
+     │
+     ▼
+ Text Splitter  ──►  Chunks (1024 tokens, 64 overlap)
+     │
+     ▼
+ Embeddings     ──►  intfloat/multilingual-e5-large-instruct
+     │
+     ▼
+ FAISS Index    ──►  Saved locally (faiss_index/)
+     │
+  Question
+     │
+     ▼
+ Retrieval      ──►  Top-k chunks by similarity score
+     │
+     ▼
+ Prompt Builder ──►  System + History + Context + Question
+     │
+     ▼
+ Qwen3:8b       ──►  Answer (via Ollama)
+```
+
+---
+
+## Project Structure
+
+```
+RAG_Langchain_Cgx/
+├── Helper.py        # Core RAG pipeline class
+├── app.py           # Gradio web interface
+├── RAG.ipynb        # Step-by-step Colab notebook
+├── questions.csv    # Evaluation questions (Transformer paper)
+├── requirements.txt
+└── .gitignore
+```
+
+---
 
 ## Installation
 
-### Setting Up
+### 1. Clone the repository
 
-To get started with LLAMA 3 RAG Langchain, follow these easy steps to set up the project on your local machine:
+```bash
+git clone https://github.com/ziadbadwy/RAG_Langchain_Cgx
+cd RAG_Langchain_Cgx
+```
 
-1. **Clone the Repository** 📥
-   - Clone this repo to your local environment using Git:
-     bash
-     git clone [https://github.com/ziadbadwy/RAG_Langchain_Cgx](https://github.com/ziadbadwy/RAG_Langchain_Cgx)
-   - cd LLAMA-3-RAG-Langchain
-     
+### 2. Install Python dependencies
 
-2. **Install Dependencies** 🛠
-   - Ensure you have Python installed and then set up the necessary libraries:
-     bash
-     pip install -r requirements.txt
-     
+```bash
+pip install -r requirements.txt
+```
 
-3. **Set Up Helper.py** 📄
-   - Helper.py is a crucial class that contains all the functions you'll need. Here's what it does:
-     - *Load the PDF*: Open and read your PDF document.
-     - *Chunk Processing*: Split the document into chunks.
-     - *Load Embeddings Model*: Prepare the embeddings model for document analysis.
-     - *Vector Store Creation*: Create a vector store to hold your document embeddings.
-     - *Document Retrieval*: Retrieve the most relevant documents based on your questions.
-     - *Prompt Building*: Automatically build prompts or use a custom template if provided.
-     - *Response Generation*: Generate responses using the LLAMA 3 model.
-     - *Evaluation*: Build an evaluation pipeline to measure the model's performance.
+### 3. Install and start Ollama
 
-4. **Running the Application** 🚀
-   - Start the application to begin interacting with the LLAMA 3 model:
-     bash
-     python app.py
-     
-## User Interface with Gradio
+Download from [ollama.com](https://ollama.com), then:
 
-To enhance user accessibility:
-- **Built with Gradio.io**: This integration allows you to interact directly with the chatbot via a straightforward web interface.
-- **No Code Interaction**: Launch the interface and start engaging with the bot immediately—no need to interact with the code or make modifications.
-- **User-Friendly**: Designed for ease of use, enabling you to focus on getting answers without any technical Background.
+```bash
+ollama serve            # start the server
+ollama pull qwen3:8b    # download the model (~5GB)
+```
 
-### Note 📝
-   - Ensure that your system has at least *8 GB of free RAM* available to run this application smoothly. This requirement is crucial for handling the intensive computational processes involved.
+### 4. Run the app
 
-Follow these steps to ensure a smooth setup and start using LLAMA 3 for document-based question answering!
+```bash
+python app.py
+```
+
+A Gradio link will appear in the terminal. Open it in your browser to start chatting.
+
+---
+
+## Helper Class
+
+`Helper.py` contains the full RAG pipeline. Here is a quick reference:
+
+| Method | What it does |
+|---|---|
+| `__init__(pdf_path, verbose)` | Loads the PDF and sets up conversation memory |
+| `splitter()` | Splits the PDF into overlapping chunks |
+| `vector_store()` | Creates (or loads) the FAISS index |
+| `retrival_with_score()` | Finds the most relevant chunks for a question |
+| `build_prompt()` | Assembles system prompt + history + context + question |
+| `llm_response(input)` | Full pipeline: retrieve → prompt → generate → remember |
+| `eval_pipeline(questions_path)` | Scores the pipeline using a CSV of test questions |
+
+### Basic usage
+
+```python
+from Helper import Helper
+
+hp = Helper("your_document.pdf", verbose=True)
+answer = hp.llm_response("What is the main idea of this document?")
+print(answer)
+```
+
+### Verbose mode
+
+Set `verbose=True` to see exactly what happens at each step — great for understanding the RAG pipeline:
+
+```
+============================================================
+  USER QUESTION
+============================================================
+What is multi-head attention?
+
+============================================================
+  RETRIEVED CHUNKS
+============================================================
+[Chunk 1] Page: 4 | Score: 0.3821
+Multi-head attention allows the model to jointly attend to information...
+
+============================================================
+  CONVERSATION HISTORY
+============================================================
+(no history yet)
+
+============================================================
+  FULL PROMPT SENT TO MODEL
+============================================================
+### System:
+You are an advanced AI assistant...
+
+============================================================
+  MODEL RESPONSE
+============================================================
+Multi-head attention is a mechanism that runs several attention...
+```
+
+---
+
+## Evaluation
+
+A CSV of test questions is included to measure how well the pipeline answers questions about the **"Attention is All You Need"** paper:
+
+```python
+score = hp.eval_pipeline('questions.csv')
+print(f'Score: {score:.1f}%')
+```
+
+The score is the percentage of answers whose embedding is similar enough to the question embedding (cosine similarity > 0.5), which gives a rough measure of relevance.
+
+---
+
+## Requirements
+
+- Python 3.9+
+- 8 GB RAM minimum (16 GB recommended)
+- [Ollama](https://ollama.com) installed and running locally
