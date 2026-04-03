@@ -1,6 +1,9 @@
 langchain
+langchain-community
+langchain-huggingface
+langchain-text-splitters
 pypdf
-gpt4all
+ollama
 yt_dlp
 unstructured
 docx2txt

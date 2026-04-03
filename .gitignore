@@ -1,0 +1,26 @@
+# Vector store index
+faiss_index/
+
+# Model files
+*.gguf
+*.bin
+*.pt
+*.pth
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.env
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

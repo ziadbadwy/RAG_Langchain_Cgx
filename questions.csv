@@ -1,0 +1,11 @@
+questions
+What is the main idea behind the Transformer architecture?
+How does scaled dot-product attention work?
+What is multi-head attention and why is it useful?
+Why did the authors replace recurrence with self-attention?
+How does positional encoding work in the Transformer?
+What is the role of the encoder and decoder in the Transformer?
+What optimizer and learning rate schedule was used to train the Transformer?
+What BLEU score did the Transformer achieve on WMT 2014 English-to-German translation?
+How does the Transformer handle long-range dependencies compared to RNNs?
+What is the difference between encoder self-attention and decoder self-attention?
