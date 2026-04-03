@@ -30,7 +30,7 @@ def get_response(prompt: str) -> str:
     return result
 
 
-class Helper:
+class Pipeline:
     def __init__(self, pdf_path, verbose=False):
         # Load the PDF document
         self.documents = PyPDFLoader(pdf_path).load_and_split()

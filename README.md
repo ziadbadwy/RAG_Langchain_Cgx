@@ -42,7 +42,7 @@ PDF Document
 
 ```
 RAG_Langchain_Cgx/
-├── Helper.py        # Core RAG pipeline class
+├── Pipeline.py        # Core RAG pipeline class
 ├── app.py           # Gradio web interface
 ├── RAG.ipynb        # Step-by-step Colab notebook
 ├── questions.csv    # Evaluation questions (Transformer paper)
@@ -86,27 +86,27 @@ A Gradio link will appear in the terminal. Open it in your browser to start chat
 
 ---
 
-## Helper Class
+## Pipeline Class
 
-`Helper.py` contains the full RAG pipeline. Here is a quick reference:
+`Pipeline.py` contains the full RAG pipeline. Here is a quick reference:
 
-| Method | What it does |
-|---|---|
-| `__init__(pdf_path, verbose)` | Loads the PDF and sets up conversation memory |
-| `splitter()` | Splits the PDF into overlapping chunks |
-| `vector_store()` | Creates (or loads) the FAISS index |
-| `retrival_with_score()` | Finds the most relevant chunks for a question |
-| `build_prompt()` | Assembles system prompt + history + context + question |
-| `llm_response(input)` | Full pipeline: retrieve → prompt → generate → remember |
-| `eval_pipeline(questions_path)` | Scores the pipeline using a CSV of test questions |
+| Method                          | What it does                                           |
+| ------------------------------- | ------------------------------------------------------ |
+| `__init__(pdf_path, verbose)`   | Loads the PDF and sets up conversation memory          |
+| `splitter()`                    | Splits the PDF into overlapping chunks                 |
+| `vector_store()`                | Creates (or loads) the FAISS index                     |
+| `retrival_with_score()`         | Finds the most relevant chunks for a question          |
+| `build_prompt()`                | Assembles system prompt + history + context + question |
+| `llm_response(input)`           | Full pipeline: retrieve → prompt → generate → remember |
+| `eval_pipeline(questions_path)` | Scores the pipeline using a CSV of test questions      |
 
 ### Basic usage
 
 ```python
-from Helper import Helper
+from Helper import Pipeline
 
-hp = Helper("your_document.pdf", verbose=True)
-answer = hp.llm_response("What is the main idea of this document?")
+pipeline = Pipeline("your_document.pdf", verbose=True)
+answer = pipeline.llm_response("What is the main idea of this document?")
 print(answer)
 ```
 
@@ -150,7 +150,7 @@ Multi-head attention is a mechanism that runs several attention...
 A CSV of test questions is included to measure how well the pipeline answers questions about the **"Attention is All You Need"** paper:
 
 ```python
-score = hp.eval_pipeline('questions.csv')
+score = pipeline.eval_pipeline('questions.csv')
 print(f'Score: {score:.1f}%')
 ```
 
