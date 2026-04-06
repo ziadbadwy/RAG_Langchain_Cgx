@@ -40,6 +40,10 @@ class Pipeline:
         self.k = 5
         # Set verbose=True to print what happens at each step (great for learning!)
         self.verbose = verbose
+        # Cache the embeddings model and FAISS index so they are only loaded once.
+        # Without this, every search call would reload the model (~10 seconds each time).
+        self.embeddings = None
+        self._faiss_index = None
 
     def _log(self, title, content):
         # Internal helper — prints a labeled section only when verbose=True
@@ -56,19 +60,27 @@ class Pipeline:
         return texts
 
     def vector_store(self, embedding_model='intfloat/multilingual-e5-large-instruct'):
+        # Return the cached index immediately if it was already built
+        if self._faiss_index is not None:
+            return self._faiss_index
+
         HOME = os.getcwd()
-        self.embeddings = HuggingFaceEmbeddings(model_name=embedding_model)
+
+        # Load the embeddings model only once
+        if self.embeddings is None:
+            self.embeddings = HuggingFaceEmbeddings(model_name=embedding_model)
+
         texts = self.splitter()
 
         # Load the existing vector store if it already exists
         if os.path.exists(os.path.join(HOME, "faiss_index")):
-            faiss_index = FAISS.load_local("./faiss_index", self.embeddings, allow_dangerous_deserialization=True)
-            return faiss_index
+            self._faiss_index = FAISS.load_local("./faiss_index", self.embeddings, allow_dangerous_deserialization=True)
         # Otherwise create a new vector store and save it
         else:
-            faiss_index = FAISS.from_documents(texts, self.embeddings)
-            faiss_index.save_local("./faiss_index")
-            return faiss_index
+            self._faiss_index = FAISS.from_documents(texts, self.embeddings)
+            self._faiss_index.save_local("./faiss_index")
+
+        return self._faiss_index
 
     def retrival_with_score(self, question, k=2, score=1.0):
         # Retrieve the most relevant documents based on the question
